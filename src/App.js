@@ -24,14 +24,14 @@ function App() {
     },
   });
   return (
-    <div>
-      {/* <div>
+    <ThemeProvider theme={theme}>
+      <div>
         <MenuAppBar />
-      </div> */}
+      </div>
       <div className="App">
         <Dashboard />
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 
