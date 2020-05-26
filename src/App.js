@@ -2,11 +2,9 @@ import React from "react";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
 import MenuAppBar from "./components/Navigation";
-import {
-  createMuiTheme,
-  ThemeProvider,
-  makeStyles,
-} from "@material-ui/core/styles";
+import Todo from "./todo/Todo";
+import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 function App() {
   const theme = createMuiTheme({
@@ -25,12 +23,21 @@ function App() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <div>
-        <MenuAppBar />
-      </div>
-      <div className="App">
-        <Dashboard />
-      </div>
+      <Router>
+        <div>
+          <MenuAppBar />
+        </div>
+        <div className="App">
+          <Switch>
+            <Route path="/todos">
+              <Todo />
+            </Route>
+            <Route path="/">
+              <Dashboard />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </ThemeProvider>
   );
 }

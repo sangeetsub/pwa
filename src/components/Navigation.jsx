@@ -8,6 +8,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import { Link } from "react-router-dom";
+import Todo from "../todo/Todo";
+import Dashboard from "./Dashboard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +20,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
+    flexGrow: 1,
+  },
+  navigations: {
+    color: "#ffffff",
+    flexGrow: 0.02,
+  },
+  flexGrow: {
     flexGrow: 1,
   },
 }));
@@ -51,9 +61,15 @@ function MenuAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Calclories
-          </Typography>
+
+          <Link to="/" className={classes.navigations}>
+            <Typography variant="h6">Calclories</Typography>
+          </Link>
+          <Link to="/todos" className={classes.navigations}>
+            <Typography variant="h6">Todo's</Typography>
+          </Link>
+          <div className={classes.flexGrow} />
+
           {auth && (
             <div>
               <IconButton
