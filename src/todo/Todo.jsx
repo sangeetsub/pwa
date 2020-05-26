@@ -12,7 +12,7 @@ function Todo() {
 
   const getTodos = () => {
     axios
-      .get("/api/todos")
+      .get("http://localhost:8000/api/todos")
       .then((res) => {
         if (res.data) {
           setTodos(res.data);
@@ -23,7 +23,7 @@ function Todo() {
 
   const deleteTodo = (id) => {
     axios
-      .delete(`/api/todos/${id}`)
+      .delete(`http://localhost:8000/api/todos/${id}`)
       .then((res) => {
         if (res.data) {
           getTodos();

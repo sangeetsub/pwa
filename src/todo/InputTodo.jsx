@@ -9,7 +9,7 @@ function InputTodo(props) {
     const task = { action: action };
 
     if (task.action && task.action.length > 0) {
-      axios.post("/api/todos", task).then((res) => {
+      axios.post("http://localhost:8000/api/todos", task).then((res) => {
         if (res.data) {
           props.getTodos();
           setAction("");
