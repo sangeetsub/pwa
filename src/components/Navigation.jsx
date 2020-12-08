@@ -61,8 +61,10 @@ function MenuAppBar() {
           >
             <MenuIcon />
           </IconButton>
-
           <Link to="/" className={classes.navigations}>
+            <Typography variant="h6">Progress</Typography>
+          </Link>
+          <Link to="/calclories" className={classes.navigations}>
             <Typography variant="h6">Calclories</Typography>
           </Link>
           <Link to="/todos" className={classes.navigations}>

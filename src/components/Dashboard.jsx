@@ -7,9 +7,14 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
+import AddIcon from "@material-ui/icons/Add";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Fab from '@material-ui/core/Fab';
+import { Card, Typography } from "@material-ui/core";
+
+import ProgressBar from './Progressbar';
+import { keys } from "@material-ui/core/styles/createBreakpoints";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,115 +36,86 @@ const useStyles = makeStyles((theme) => ({
 export default function CenteredGrid() {
   const classes = useStyles();
 
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("male");
-  const [activeLevel, setActiveLevel] = useState("");
-  const [myCalories, setMyCalories] = useState(0);
+  const [name, setName] = useState("");
+  const [unitType, setUnitType] = useState("");
+  const [maxLimit, setMaxLimit] = useState("male");
+
+  const clearFields = () => {
+          setName("");
+          setMaxLimit("");
+          setUnitType("");
+  }
 
   const handleSubmit = () => {
-    let myCalories = 0;
-    if (gender === "male") {
-      myCalories =
-        (66 + 6.2 * weight + 12.7 * height - 6.76 * age) *
-        (activeLevel ? activeLevel : 1);
-      setMyCalories(myCalories.toFixed(2));
-    } else {
-      myCalories =
-        (655.1 + 4.35 * weight + 4.7 * height - 4.7 * age) *
-        (activeLevel ? activeLevel : 1);
-      setMyCalories(myCalories.toFixed(2));
+  const progressItems = getProgressItems();
+    let item = {
+      name : name,
+      unitType: unitType,
+      completed: 0,
+      maxLimit: maxLimit,
     }
+  const toPush = {...progressItems, [name]: item}
+  localStorage.setItem("progressItems", JSON.stringify(toPush));
+  clearFields();
   };
+
+  const getProgressItems = () => JSON.parse(localStorage.getItem("progressItems") || "{}");
+
+
+  const trackBarsRender = () => {
+    const allCompObj = getProgressItems();
+    if(Object.keys(allCompObj).length == 0){
+      return <div>No Items</div>
+    } else {
+  const allComp = [];
+  Object.keys(allCompObj).forEach(key => {
+    allComp.push(<ProgressBar progressItem={allCompObj[key.toString()]}/>)
+  });
+  return allComp;
+    }
+}
 
   return (
     <div className={classes.root}>
       <Grid container spacing={1} justify="center">
         <Grid item xs={11} sm={8}>
+          {trackBarsRender()}
+        </Grid>
+        <Grid item xs={11} sm={8}>
           <h2>
-            Please enter your info down below to calculate your calories lost
-            per day.
+          Create Progress Bar
           </h2>
         </Grid>
         <Grid item xs={11} sm={7}>
           <TextField
             fullWidth
-            id="weight"
-            type="Number"
-            label="Weight (lbs)"
+            id="name"
+            label="Name"
             variant="outlined"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </Grid>
         <Grid item xs={11} sm={7}>
           <TextField
             fullWidth
-            id="height"
-            type="Number"
-            label="Height (inches)"
+            id="unitNae"
+            label="Unit Name "
             variant="outlined"
-            value={height}
-            onChange={(e) => setHeight(e.target.value)}
+            value={unitType}
+            onChange={(e) => setUnitType(e.target.value)}
           />
         </Grid>
-        <Grid item xs={11} sm={7}>
+                <Grid item xs={11} sm={7}>
           <TextField
             fullWidth
-            id="age"
+            id="maxLimit"
             type="Number"
-            label="Age"
+            label="Goal Amount"
             variant="outlined"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
+            value={maxLimit}
+            onChange={(e) => setMaxLimit(e.target.value)}
           />
-        </Grid>
-        <Grid item xs={11} sm={7}>
-          <FormControl
-            variant="outlined"
-            className={classes.formControl}
-            fullWidth
-          >
-            <InputLabel htmlFor="outlined-age-native-simple">
-              Active Label
-            </InputLabel>
-            <Select
-              native
-              value={activeLevel}
-              onChange={(e) => {
-                setActiveLevel(e.target.value);
-              }}
-              inputProps={{
-                name: "activeLevel",
-                id: "outlined-age-native-simple",
-              }}
-            >
-              <option value="" aria-label="None" />
-              <option value={1.2}>Little to None</option>
-              <option value={1.37}>Slightly</option>
-              <option value={1.55}>Moderate</option>
-              <option value={1.725}>Very</option>
-              <option value={1.9}>Extra</option>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={11} sm={7}>
-          <RadioGroup
-            row
-            aria-label="gender"
-            name="gender1"
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            className="Center"
-          >
-            <FormControlLabel
-              value="female"
-              control={<Radio />}
-              label="Female"
-            />
-            <FormControlLabel value="male" control={<Radio />} label="Male" />
-          </RadioGroup>
         </Grid>
         <Grid item xs={11} sm={7}>
           <Button
@@ -148,27 +124,22 @@ export default function CenteredGrid() {
             className={classes.button}
             onClick={handleSubmit}
           >
-            Calculate
+            Create
           </Button>
         </Grid>
         <Grid item xs={11} sm={7}>
           <Button
             onClick={() => {
-              setAge("");
-              setGender("male");
-              setHeight("");
-              setWeight("");
-              setActiveLevel("");
-              setMyCalories(0);
+              clearFields();
             }}
             color="secondary"
           >
             Clear
           </Button>
+
         </Grid>
 
         <Grid item xs={11} sm={7}>
-          <h2>{`You've lost : ${myCalories} calories today.`}</h2>
           <p>&copy; Sangeet Subedi, 2020</p>
         </Grid>
       </Grid>

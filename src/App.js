@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
 import MenuAppBar from "./components/Navigation";
+import Calclories from './components/Calclories';
 import Todo from "./todo/Todo";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
@@ -31,6 +32,9 @@ function App() {
           <Switch>
             <Route path="/todos">
               <Todo />
+            </Route>
+              <Route path="/calclories">
+              <Calclories />
             </Route>
             <Route path="/">
               <Dashboard />
